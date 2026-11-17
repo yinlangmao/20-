@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>27考研英语二大作文模板生成器（精简控字版）</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --success: #059669;
+      --danger: #dc2626;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 40px;
+    }
+    header {
+      background: #1e3a8a;
+      color: #fff;
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .header-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-inner h1 { font-size: 1.15rem; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .presets span { font-size: 0.78rem; opacity: 0.85; }
+    .btn-preset {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      cursor: pointer;
+    }
+    .btn-preset:hover { background: rgba(255,255,255,0.28); }
+
+    .container {
+      max-width: 1360px;
+      margin: 18px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 960px) { .container { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tab-btn {
+      padding: 8px 6px;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+    }
+    .field { margin-bottom: 10px; }
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .field input, .field textarea {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+    .field input:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+    }
+
+    .preview-sticky { position: sticky; top: 72px; }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      margin-bottom: 12px;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .stats.ok { color: var(--success); background: #ecfdf5; border: 1px solid #a7f3d0; }
+    .stats.over { color: var(--danger); background: #fef2f2; border: 1px solid #fecaca; }
+
+    .paper {
+      background: #fffdf9;
+      border: 1px solid #e2d9c8;
+      border-radius: 8px;
+      padding: 20px 22px;
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      min-height: 320px;
+    }
+    .paper p { text-indent: 2em; margin-bottom: 12px; text-align: justify; }
+    .paper p:last-child { margin-bottom: 0; }
+    .placeholder-tag {
+      background: #fef08a;
+      color: #854d0e;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.88rem;
+    }
+
+    .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .btn {
+      flex: 1;
+      padding: 9px 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: #fff; border: 1px solid #cbd5e1; color: var(--text); }
+    .btn-outline:hover { background: #f1f5f9; }
+    .btn-warn { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+
+    .hint { font-size: 0.76rem; color: var(--muted); margin-top: 6px; }
+    .toast {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #0f172a; color: #fff;
+      padding: 9px 16px; border-radius: 8px; font-size: 0.84rem;
+      opacity: 0; transition: 0.2s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1>📊 考研英语二大作文模板生成器（155~190词精简版）</h1>
+    <div class="presets">
+      <span>真题一键填入：</span>
+      <button class="btn-preset" onclick="applyPreset('2026')">26户外活动</button>
+      <button class="btn-preset" onclick="applyPreset('2025')">25老人休闲</button>
+      <button class="btn-preset" onclick="applyPreset('2024')">24劳动实践</button>
+      <button class="btn-preset" onclick="applyPreset('2023')">23健康素养</button>
+      <button class="btn-preset" onclick="applyPreset('2020')">20手机阅读</button>
+      <button class="btn-preset" onclick="applyPreset('2019')">19毕业去向</button>
+      <button class="btn-preset" onclick="applyPreset('2012')">12员工满意度</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <!-- 左侧：替换词填表 & 在线模板维护 -->
+  <div>
+    <div class="card">
+      <div class="card-title">
+        <span>1️⃣ 选择英语二图表题型</span>
+        <span style="font-size:0.78rem; color:var(--muted);">自动识别模板内所有 {占位符}</span>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-static" onclick="switchType('static')">静态占比图</button>
+        <button class="tab-btn" id="tab-dyn_single" onclick="switchType('dyn_single')">动态单向图</button>
+        <button class="tab-btn" id="tab-dyn_compare" onclick="switchType('dyn_compare')">动态双向对比</button>
+        <button class="tab-btn" id="tab-table" onclick="switchType('table')">表格对比题</button>
+      </div>
+
+      <div id="dynamicInputs" class="grid-2"></div>
+      <div class="hint">💡 只需填写上方 {占位符} 对应的英文短语，右侧自动生成完整作文并实时检查是否超 200 词。</div>
+    </div>
+
+    <!-- 在线修改模板原文（方便后期维护） -->
+    <div class="card">
+      <div class="card-title">
+        <span>✏️ 后期维护：在线修改当前题型模板原文</span>
+        <button class="btn-outline" style="padding:3px 9px; font-size:0.76rem; border-radius:6px; cursor:pointer;" onclick="resetCurrentTemplate()">恢复默认模板</button>
+      </div>
+      <div class="field" style="margin-bottom:8px;">
+        <label>直接编辑下方模板（保留 {占位符} 即可自动生成对应输入框，支持双换行分段）：</label>
+        <textarea id="templateEditor" rows="9" oninput="onTemplateEdit(this.value)"></textarea>
+      </div>
+      <div class="btn-row" style="margin-top:0;">
+        <button class="btn btn-primary" onclick="saveTemplatesLocal()">💾 保存修改到云端/本地缓存</button>
+        <button class="btn btn-outline" onclick="exportConfig()">📦 导出配置代码（用于更新GitHub）</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：实时生成与控字预览 -->
+  <div class="preview-sticky">
+    <div class="card">
+      <div class="card-title">
+        <span>2️⃣ 实时生成结果（英语二标准）</span>
+        <button class="btn-warn" style="padding:4px 10px; font-size:0.78rem; border-radius:6px; cursor:pointer;" onclick="toggleRawView()" id="btnRawToggle">
+          👁️ 查看 {占位符} 模板原貌
+        </button>
+      </div>
+
+      <div class="stats ok" id="wordStats">
+        <span>当前大纲净词数（不含标点）：<strong id="wordCount">0</strong> 词</span>
+        <span id="wordStatus">✅ 完美区间 (150~195词)</span>
+      </div>
+
+      <div class="paper" id="essayPaper"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="copyEssay()">📋 一键复制全文</button>
+        <button class="btn btn-outline" onclick="clearValues()">🧹 清空当前填空</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // =========================================================================
+  // 【核心配置区】四大英语二完整模板（后期维护只需修改这里，或直接在网页上修改）
+  // =========================================================================
+  const DEFAULT_TEMPLATES = {
+    static: `The {图表类型} above presents the distribution of {图表主题}, with {第一名项目} accounting for the largest share. Specifically, {项目一} and {项目二} take the lead at {数值一} and {数值二} respectively, followed by {项目三} ({数值三}) and {项目四} ({数值四}). Clearly, {核心主题词} has drawn growing attention from {目标人群}.
+
+Two key reasons account for this phenomenon. First and foremost, no one can deny the fact that {核心主题词} plays a crucial role in {积极领域一}. Furthermore, not only does {核心主题词} {动词短语一}, but it also {动词短语二}.
+
+All in all, {核心主题词} is not an option, but a necessity in modern life. For one thing, it is imperative for the authorities to {政府或学校措施}. For another, {目标人群} ought to spare no pains to {个人行动}. Only through these joint efforts can we embrace a brighter future.`,
+
+    dyn_single: `The {图表类型} above illustrates the changes in {图表主题} from {起始年份} to {结束年份}, during which it {变化趋势}. Specifically, the figure stood at {起始数值} in {起始年份}, climbed to {中间数值} in {中间年份}, and finally reached {结束数值} in {结束年份}. Clearly, {核心主题词} has been improving rapidly in recent years.
+
+Two key reasons account for this tendency. First and foremost, the majority of {目标人群} hold the view that {核心主题词} can significantly {积极作用一}. Furthermore, not only does {核心主题词} {动词短语一}, but it also {动词短语二}.
+
+Taking all these factors into account, we may reasonably conclude that {核心主题词} will continue to develop positively in the coming years. For one thing, the authorities should {政府措施}. For another, {目标人群} ought to raise their awareness of {核心主题词} and embrace a healthier future.`,
+
+    dyn_compare: `The {图表类型} above compares the changes in {图表主题} between {起始年份} and {结束年份}. Specifically, the proportion of {上升项目} climbed noticeably from {起始值一} to {结束值一}. By contrast, {下降项目} dropped from {起始值二} to {结束值二} during the same period. Clearly, {核心主题词} has become an increasingly prominent trend among {目标人群}.
+
+Two key reasons account for this shift. First and foremost, no one can deny the fact that {核心主题词} plays a crucial role in {积极领域一}. Furthermore, compared with {传统对比项}, {核心主题词} can better {优势作用}, thereby promoting {长远益处}.
+
+All in all, we should view this trend rationally. For one thing, it is imperative for the authorities to {政府或高校措施}. For another, {目标人群} ought to spare no pains to {个人行动} so as to adapt to the changing society.`,
+
+    table: `The table above presents a survey on {图表主题} across {分组维度}. Specifically, {群体一} reported the highest rate of {正面指标} at {数值一}, whereas {群体二} showed the highest level of {负面指标} at {数值二}, with {群体三} standing at {数值三} in {正面指标}. Overall, {核心发现}.
+
+Two key reasons account for this phenomenon. First and foremost, no one can deny the fact that {核心主题词} plays a crucial role in {积极领域一}. Furthermore, if we ignored the importance of {核心主题词}, {主体} would be confronted with {负面后果}.
+
+All in all, enough attention must be paid to {核心主题词}. For one thing, {管理方} should {改进措施一}. For another, {个人或员工} ought to {改进措施二}. Only through these joint efforts can we achieve a win-win outcome.`
+  };
+
+  // =========================================================================
+  // 【历年英语二真题预设库】（依据真题汇编整理，字数均在 155~180 词）
+  // =========================================================================
+  const PRESETS = {
+    "2026": {
+      type: "static",
+      values: {
+        "图表类型": "bar chart",
+        "图表主题": "respondents' views on children's outdoor activities",
+        "第一名项目": "satisfying curiosity",
+        "项目一": "satisfying curiosity",
+        "数值一": "54.6%",
+        "项目二": "developing observational skills",
+        "数值二": "54.5%",
+        "项目三": "strengthening physical fitness",
+        "数值三": "37.2%",
+        "项目四": "enhancing parent-child interaction",
+        "数值四": "33.2%",
+        "核心主题词": "outdoor activities",
+        "目标人群": "parents",
+        "积极领域一": "children's physical and mental health",
+        "动词短语一": "satisfy children's curiosity",
+        "动词短语二": "strengthen family bonding",
+        "政府或学校措施": "improve public facilities for children",
+        "个人行动": "encourage kids to explore nature"
+      }
+    },
+    "2025": {
+      type: "static",
+      values: {
+        "图表类型": "bar chart",
+        "图表主题": "the main daily leisure activities of the elderly in a community",
+        "第一名项目": "watching TV",
+        "项目一": "watching TV",
+        "数值一": "90.8%",
+        "项目二": "taking a walk",
+        "数值二": "68.3%",
+        "项目三": "growing flowers",
+        "数值三": "34.7%",
+        "项目四": "reading",
+        "数值四": "31.8%",
+        "核心主题词": "diverse leisure activities",
+        "目标人群": "senior citizens",
+        "积极领域一": "improving the quality of life for the elderly",
+        "动词短语一": "enrich their retirement life",
+        "动词短语二": "promote physical and mental well-being",
+        "政府或学校措施": "build more community activity centers",
+        "个人行动": "participate in outdoor and cultural activities"
+      }
+    },
+    "2024": {
+      type: "static",
+      values: {
+        "图表类型": "bar chart",
+        "图表主题": "college students' main gains from labor practice courses",
+        "第一名项目": "learning relevant knowledge",
+        "项目一": "learning relevant knowledge",
+        "数值一": "91.3%",
+        "项目二": "improving practical skills",
+        "数值二": "84.8%",
+        "项目三": "feeling delighted",
+        "数值三": "54.4%",
+        "项目四": "enhancing cooperation ability",
+        "数值四": "32.6%",
+        "核心主题词": "labor education",
+        "目标人群": "undergraduates",
+        "积极领域一": "students' all-round development",
+        "动词短语一": "improve their practical skills",
+        "动词短语二": "cultivate a sense of teamwork",
+        "政府或学校措施": "offer more practical courses on campus",
+        "个人行动": "take an active part in hands-on practice"
+      }
+    },
+    "2023": {
+      type: "dyn_single",
+      values: {
+        "图表类型": "line chart",
+        "图表主题": "Chinese residents' health literacy level",
+        "起始年份": "2012",
+        "结束年份": "2021",
+        "变化趋势": "rose steadily",
+        "起始数值": "8.80%",
+        "中间数值": "11.58%",
+        "中间年份": "2016",
+        "结束数值": "25.40%",
+        "核心主题词": "health literacy",
+        "目标人群": "residents",
+        "积极作用一": "improve their physical and mental health",
+        "动词短语一": "prevent common diseases",
+        "动词短语二": "enhance overall quality of life",
+        "政府措施": "improve public medical services"
+      }
+    },
+    "2020": {
+      type: "static",
+      values: {
+        "图表类型": "pie chart",
+        "图表主题": "college students' purposes of mobile phone reading",
+        "第一名项目": "acquiring knowledge",
+        "项目一": "acquiring knowledge",
+        "数值一": "59.5%",
+        "项目二": "killing time",
+        "数值二": "21.3%",
+        "项目三": "obtaining information",
+        "数值三": "17.0%",
+        "项目四": "other purposes",
+        "数值四": "2.2%",
+        "核心主题词": "digital reading",
+        "目标人群": "college students",
+        "积极领域一": "personal growth and academic progress",
+        "动词短语一": "broaden students' horizons",
+        "动词短语二": "bring convenience to daily learning",
+        "政府或学校措施": "provide richer digital library resources",
+        "个人行动": "make rational use of fragmented time"
+      }
+    },
+    "2019": {
+      type: "dyn_compare",
+      values: {
+        "图表类型": "bar chart",
+        "图表主题": "the choices of college graduates in a university",
+        "起始年份": "2013",
+        "结束年份": "2018",
+        "上升项目": "graduates pursuing further study",
+        "起始值一": "26.3%",
+        "结束值一": "34.0%",
+        "下降项目": "those entering the workforce directly",
+        "起始值二": "68.1%",
+        "结束值二": "60.7%",
+        "核心主题词": "pursuing postgraduate education",
+        "目标人群": "graduates",
+        "积极领域一": "enhancing career competitiveness",
+        "传统对比项": "early employment",
+        "优势作用": "deepen professional knowledge",
+        "长远益处": "long-term career development",
+        "政府或高校措施": "improve postgraduate training quality",
+        "个人行动": "plan their career paths rationally"
+      }
+    },
+    "2012": {
+      type: "table",
+      values: {
+        "图表主题": "employee job satisfaction in a company",
+        "分组维度": "different age groups",
+        "群体一": "employees over 50",
+        "正面指标": "satisfaction",
+        "数值一": "40.0%",
+        "群体二": "those aged 41 to 50",
+        "负面指标": "dissatisfaction",
+        "数值二": "64.0%",
+        "群体三": "staff aged 40 or below",
+        "数值三": "16.7%",
+        "核心发现": "middle-aged employees face the greatest pressure",
+        "核心主题词": "employee job satisfaction",
+        "积极领域一": "improving work efficiency and company growth",
+        "主体": "enterprises",
+        "负面后果": "high staff turnover and low productivity",
+        "管理方": "companies",
+        "改进措施一": "establish a fair promotion and welfare system",
+        "个人或员工": "employees",
+        "改进措施二": "maintain a positive attitude and improve skills"
+      }
+    }
+  };
+
+  let templates = JSON.parse(localStorage.getItem('en2_templates_v1')) || { ...DEFAULT_TEMPLATES };
+  let currentType = 'static';
+  let currentValues = {};
+  let showRawTemplate = false;
+
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  function extractPlaceholders(tpl) {
+    const matches = tpl.match(/\{([^}]+)\}/g) || [];
+    return [...new Set(matches.map(m => m.slice(1, -1)))];
+  }
+
+  function switchType(type) {
+    currentType = type;
+    ['static', 'dyn_single', 'dyn_compare', 'table'].forEach(t => {
+      document.getElementById('tab-' + t).classList.toggle('active', t === type);
+    });
+    document.getElementById('templateEditor').value = templates[type];
+    renderInputs();
+    renderEssay();
+  }
+
+  function renderInputs() {
+    const keys = extractPlaceholders(templates[currentType]);
+    const container = document.getElementById('dynamicInputs');
+    container.innerHTML = keys.map(k => `
+      <div class="field" style="margin-bottom:4px;">
+        <label>{${k}}</label>
+        <input type="text" value="${escapeHtml(currentValues[k] || '')}"
+               placeholder="输入 ${k}"
+               oninput="updateValue('${escapeJs(k)}', this.value)" />
+      </div>
+    `).join('');
+  }
+
+  function updateValue(key, val) {
+    currentValues[key] = val;
+    renderEssay();
+  }
+
+  function onTemplateEdit(val) {
+    templates[currentType] = val;
+    renderInputs();
+    renderEssay();
+  }
+
+  function saveTemplatesLocal() {
+    localStorage.setItem('en2_templates_v1', JSON.stringify(templates));
+    toast('✅ 已保存最新模板配置！');
+  }
+
+  function resetCurrentTemplate() {
+    templates[currentType] = DEFAULT_TEMPLATES[currentType];
+    localStorage.setItem('en2_templates_v1', JSON.stringify(templates));
+    document.getElementById('templateEditor').value = templates[currentType];
+    renderInputs();
+    renderEssay();
+    toast('已恢复该题型默认模板');
+  }
+
+  function exportConfig() {
+    const code = 'const DEFAULT_TEMPLATES = ' + JSON.stringify(templates, null, 2) + ';';
+    navigator.clipboard.writeText(code);
+    toast('📦 配置代码已复制！可直接粘贴覆盖 GitHub 代码中的 DEFAULT_TEMPLATES');
+  }
+
+  function toggleRawView() {
+    showRawTemplate = !showRawTemplate;
+    document.getElementById('btnRawToggle').textContent = showRawTemplate
+      ? '📝 返回真题填充预览'
+      : '👁️ 查看 {占位符} 模板原貌';
+    renderEssay();
+  }
+
+  function renderEssay() {
+    const rawTpl = templates[currentType];
+    const paragraphs = rawTpl.split(/\n\s*\n/).filter(Boolean);
+    const paper = document.getElementById('essayPaper');
+
+    if (showRawTemplate) {
+      paper.innerHTML = paragraphs.map(p => {
+        const highlighted = escapeHtml(p).replace(/\{([^}]+)\}/g, '<span class="placeholder-tag">{$1}</span>');
+        return `<p>${highlighted}</p>`;
+      }).join('');
+    } else {
+      paper.innerHTML = paragraphs.map(p => {
+        const filled = p.replace(/\{([^}]+)\}/g, (_, key) => {
+          const val = (currentValues[key] || '').trim();
+          return val ? escapeHtml(val) : `<span class="placeholder-tag">{${escapeHtml(key)}}</span>`;
+        });
+        return `<p>${filled}</p>`;
+      }).join('');
+    }
+
+    // 统计纯净英文词数（替换后或占位状态下）
+    const plainText = paragraphs.map(p =>
+      p.replace(/\{([^}]+)\}/g, (_, key) => (currentValues[key] || '').trim() || 'word')
+    ).join(' ');
+    const words = plainText.trim().split(/\s+/).filter(w => /[a-zA-Z0-9]/.test(w));
+    const count = words.length;
+
+    document.getElementById('wordCount').textContent = count;
+    const statsBox = document.getElementById('wordStats');
+    const statusEl = document.getElementById('wordStatus');
+
+    if (count > 200) {
+      statsBox.className = 'stats over';
+      statusEl.textContent = '⚠️ 已超 200 词！请精简填空短语';
+    } else if (count < 150) {
+      statsBox.className = 'stats over';
+      statusEl.textContent = '⚠️ 不足 150 词，请补全填空';
+    } else {
+      statsBox.className = 'stats ok';
+      statusEl.textContent = '✅ 完美区间 (150~200词)';
+    }
+  }
+
+  function applyPreset(year) {
+    const p = PRESETS[year];
+    if (!p) return;
+    showRawTemplate = false;
+    document.getElementById('btnRawToggle').textContent = '👁️ 查看 {占位符} 模板原貌';
+    currentValues = { ...p.values };
+    switchType(p.type);
+    toast(`✅ 已载入 ${year} 年英语二真题范例！`);
+  }
+
+  function clearValues() {
+    currentValues = {};
+    renderInputs();
+    renderEssay();
+    toast('已清空填空内容');
+  }
+
+  function copyEssay() {
+    const text = Array.from(document.querySelectorAll('#essayPaper p'))
+      .map(p => '    ' + p.textContent)
+      .join('\n\n');
+    navigator.clipboard.writeText(text);
+    toast('✅ 作文已复制到剪贴板！');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function escapeJs(s) {
+    return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  }
+
+  // 默认加载 2026 年英语二真题作为示例
+  window.addEventListener('DOMContentLoaded', () => applyPreset('2026'));
+</script>
+</body>
+</html>
